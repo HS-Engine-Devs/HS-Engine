@@ -1,305 +1,408 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HS Engine - Friday Night Funkin'</title>
-  <style>
-    :root {
-      --primary-color: #FF0099; /* Hot Pink */
-      --secondary-color: #FFFFFF; /* White */
-      --background-color: #2C2C2C; /* Dark Gray */
-      --text-color: #EAEAEA; /* Light Gray */
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-    }
-
-    header {
-      background-color: #111;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      color: var(--secondary-color);
-    }
-
-    header h1 span {
-      color: var(--primary-color);
-    }
-
-    nav a {
-      color: var(--secondary-color);
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-
-    nav a:hover {
-      color: var(--primary-color);
-      text-shadow: 0 0 6px rgba(255, 0, 153, 0.6);
-    }
-
-    main {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
-    main img {
-      max-width: 600px;
-	    padding-left: 130px;
-    }
-
-    .download-btn {
-      background-color: var(--primary-color);
-      color: var(--secondary-color);
-      padding: 0.8rem 1.8rem;
-      border: none;
-      border-radius: 6px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-    }
-
-    .download-btn:hover {
-      background-color: #e600b8;
-    }
-
-    .section-divider {
-      width: 80%;
-      margin: 4rem auto 3rem auto;
-      border-top: 2px solid #555;
-      opacity: 0.7;
-    }
-
-    footer {
-      background-color: #111;
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-    }
-
-    h3 {
-      font-size: 2.4rem;
-      color: var(--primary-color);
-    }
-
-    .credits-table {
-      width: 60%;
-      margin: 3rem auto;
-      text-align: left;
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      margin-right: 285px;
-    }
-
-    .credits-table th,
-    .credits-table td {
-      padding: 1rem 1.2rem;
-      border: 1px solid var(--border-color);
-      font-size: 0.95rem;
-      vertical-align: middle;
-    }
-
-    .credits-table th {
-      background-color: var(--primary-color);
-      color: var(--secondary-color);
-      text-align: center;
-      font-size: 1.1rem;
-    }
-
-    .credits-table td {
-      background-color: #333;
-      color: var(--text-color);
-      text-align: left;
-    }
-
-    .credits-table td img {
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .credits-table a {
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .credits-table a:hover {
-      text-decoration: underline;
-    }
-
-    .credits-table tr:hover {
-      background-color: var(--hover-bg-color);
-    }
-
-    @media (max-width: 768px) {
-      .credits-table {
-        width: 90%;
-      }
-
-      .credits-table th,
-      .credits-table td {
-        font-size: 0.9rem;
-        padding: 0.8rem 1rem;
-      }
-
-      .credits-table td img {
-        width: 56px;
-        height: 56px;
-      }
-    }
-
-    .screenshots-gallery img {
-      padding-right: 25px;
-      padding-left: 25px;
-      border-radius: 12px;
-      transition: transform 0.3s ease;
-    }
-
-    .screenshots-gallery img:hover {
-      transform: scale(1.02);
-    }
-
-    @media (max-width: 768px) {
-      .screenshots-gallery img {
-        max-width: 90%;
-        margin-bottom: 1.5rem;
-      }
-    }
-
-    #lightbox {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      cursor: pointer;
-    }
-
-    #lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 12px;
-      transform: scale(0.8);
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    #lightbox.show img {
-      transform: scale(1);
-      opacity: 1;
-    }
-  </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#110b12">
+	<meta name="description" content="Modding documentation for Friday Night Funkin': HS Engine. Learn folder and ZIP mods, manifests, songs, and scripts.">
+	<title>HS Engine Mod API</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="modapi.css">
+	<script src="modapi.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1><span>HS</span> Engine</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="modapi.html">Mod API</a>
-      <a href="https://github.com/Gidk-g/HS-Engine?tab=readme-ov-file">GitHub</a>
-    </nav>
-  </header>
-  <main>
-    <img src="img/hs-engine.png" alt="HS Engine Logo" />
-    <h2>Unleash Your Modding Creativity</h2>
-    <p>HS Engine is a powerful toolkit for creating Friday Night Funkin' mods with ease.</p>
-    <button class="download-btn">Download Now</button>
+	<a class="skip-link" href="#main-content">Skip to documentation</a>
+	<header class="topbar">
+		<button class="mobile-menu" id="mobile-menu" type="button" aria-label="Open documentation menu" aria-expanded="false" aria-controls="sidebar">
+			<span></span><span></span><span></span>
+		</button>
+		<a class="brand" href="#overview" aria-label="HS Engine Mod API home">
+			<img src="img/hs-engine.png" alt="HS Engine logo">
+			<span class="brand-copy"><strong>HS ENGINE</strong><small>MOD API</small></span>
+		</a>
+		<div class="topbar-meta"><span class="status-dot"></span> MODDING HANDBOOK <span class="topbar-divider">/</span> v0.9.5</div>
+		<a class="repo-link" href="https://github.com/Gidk-g/HS-Engine" target="_blank" rel="noreferrer">Repository <span aria-hidden="true">↗</span></a>
+	</header>
 
-    <div class="section-divider"></div>
+	<div class="page-shell">
+		<aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
+			<div class="search-wrap">
+				<label for="doc-search">FIND IN DOCS</label>
+				<div class="search-field">
+					<span class="search-icon" aria-hidden="true">⌕</span>
+					<input id="doc-search" type="search" placeholder="Search topics..." autocomplete="off">
+					<kbd>⌘ K</kbd>
+				</div>
+				<p class="search-status" id="search-status" aria-live="polite"></p>
+			</div>
 
-    <section class="screenshots">
-      <h3>Game Screenshots</h3>
-      <div class="screenshots-gallery">
-        <img src="img/screen1.png" alt="Screenshot 1" />
-        <img src="img/screen2.png" alt="Screenshot 2" />
-        <img src="img/screen3.png" alt="Screenshot 3" />
-        <img src="img/screen4.png" alt="Screenshot 4" />
-      </div>
-    </section>
+			<nav class="toc" id="toc">
+				<p class="toc-label">GETTING STARTED</p>
+				<a href="#overview" class="toc-link active"><span>01</span> Overview</a>
+				<a href="#song-list" class="toc-link"><span>02</span> Add a Freeplay song</a>
+				<p class="toc-label">CHARACTERS &amp; STAGES</p>
+				<a href="#characters" class="toc-link"><span>03</span> Add a character</a>
+				<a href="#stages" class="toc-link"><span>04</span> Stages &amp; backgrounds</a>
+				<a href="#weeks" class="toc-link"><span>05</span> Add a week</a>
+				<p class="toc-label">MORE MODDING</p>
+				<a href="#scripts" class="toc-link"><span>06</span> HScript</a>
+				<a href="#assets" class="toc-link"><span>07</span> Other resources</a>
+				<a href="#quickstart" class="toc-link"><span>08</span> Create a mod</a>
+				<a href="#structure" class="toc-link"><span>09</span> Folder structure</a>
+				<a href="#manifest" class="toc-link"><span>10</span> mod.json</a>
+				<a href="#zip-mods" class="toc-link"><span>11</span> ZIP packages</a>
+				<a href="#mod-library" class="toc-link"><span>12</span> Mod Library</a>
+				<a href="#troubleshooting" class="toc-link"><span>13</span> Troubleshooting</a>
+			</nav>
 
-    <div class="section-divider"></div>
+			<div class="sidebar-foot">
+				<span class="sidebar-mark">HS</span>
+				<div><strong>Built for creators</strong><small>Friday Night Funkin': HS Engine</small></div>
+			</div>
+		</aside>
 
-    <h3>HS Engine Developers</h3>
-    <table class="credits-table">
-      <tr>
-        <th>Credits Icon</th>
-        <th>Username</th>
-        <th>Involvement</th>
-      </tr>
-      <tr>
-        <td><img src="img/haxel.png" width="64" height="64"/></td>
-        <td><a href="https://github.com/HaxelDev" target="_blank">HaxelDev</a></td>
-        <td>Main-Programmer of HS Engine</td>
-      </tr>
-      <tr>
-        <td><img src="img/toska.png" width="64" height="64"/></td>
-        <td><a href="https://github.com/teotm" target="_blank">teotm</a></td>
-        <td>Programmer of HS Engine</td>
-      </tr>
-      <tr>
-        <td><img src="img/wipek.png" width="64" height="64"/></td>
-        <td><a href="https://www.youtube.com/watch?v=lrJLIE3jGOs" target="_blank">Wipek</a></td>
-        <td>Artist of HS Engine</td>
-      </tr>
-      <tr>
-        <td><img src="img/kot.png" width="64" height="64"/></td>
-        <td><a href="https://github.com/CoddingCatPL" target="_blank">Codding Cat</a></td>
-        <td>Ex-Programmer of HS Engine</td>
-      </tr>
-    </table>
-  </main>
-  <footer>
-    &copy; 2025 HS Engine.
-  </footer>
-  <div id="lightbox">
-    <img src="" alt="Expanded screenshot" />
-  </div>
-  <script>
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.querySelector('#lightbox img');
-    const screenshots = document.querySelectorAll('.screenshots-gallery img');
+		<main id="main-content" class="main-content">
+			<div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+			<div class="docs-column">
+				<section class="doc-section intro-section" id="overview" data-search="overview introduction haxe flixel engine modding framework">
+					<div class="intro-topline"><span class="eyebrow">THE CREATOR'S HANDBOOK</span><span class="eyebrow-rule"></span><span class="eyebrow-version">DOCS / 01</span></div>
+					<div class="intro-heading">
+						<div>
+							<h1>Make something<br><em>the engine can play.</em></h1>
+							<p class="intro-copy">HS Engine is a HaxeFlixel-based Friday Night Funkin' engine with custom content, in-game editors, and a built-in mod system. This guide takes you from an empty folder to a working mod.</p>
+						</div>
+						<img class="intro-logo" src="img/hs-engine.png" alt="Friday Night Funkin' HS Engine">
+					</div>
+					<div class="intro-actions">
+						<a class="action-primary" href="#song-list">Add a song <span aria-hidden="true">↓</span></a>
+						<a class="action-secondary" href="#characters">Add a character <span aria-hidden="true">→</span></a>
+					</div>
+					<div class="feature-strip" aria-label="Mod capabilities">
+						<div><span class="feature-index">A</span><strong>Folder or ZIP</strong><small>No archive extraction</small></div>
+						<div><span class="feature-index">B</span><strong>Custom content</strong><small>Songs, charts, stages</small></div>
+						<div><span class="feature-index">C</span><strong>In-game library</strong><small>Inspect and toggle mods</small></div>
+					</div>
+				</section>
 
-    screenshots.forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.style.display = 'flex';
-        setTimeout(() => {
-          lightbox.classList.add('show');
-        }, 10);
-        document.body.style.overflow = 'hidden';
-      });
-    });
+				<section class="doc-section" id="quickstart" data-search="quick start create install folder zip mod setup">
+					<div class="section-kicker"><span>08</span> GETTING STARTED</div>
+					<h2>Make your first mod</h2>
+					<p>Create a directory inside the game's <code>mods/</code> folder. The directory name is its internal ID; use a short, unique name with lowercase letters, numbers, and hyphens.</p>
+					<div class="steps-list">
+						<div class="step-row"><span class="step-number">01</span><div><h3>Create the mod directory</h3><p>For example, <code>mods/my-first-mod/</code>.</p></div></div>
+						<div class="step-row"><span class="step-number">02</span><div><h3>Add a manifest</h3><p>Create <code>mod.json</code> in the mod root so the library can show its name and details.</p></div></div>
+						<div class="step-row"><span class="step-number">03</span><div><h3>Add content</h3><p>Put songs, charts, images, or scripts in the matching folders under <code>data/</code>, <code>images/</code>, and <code>songs/</code>.</p></div></div>
+						<div class="step-row"><span class="step-number">04</span><div><h3>Launch and enable</h3><p>Open the Mod Library and press Enter on your mod to toggle it.</p></div></div>
+					</div>
+					<div class="callout callout-mint"><span class="callout-icon">i</span><p>The game can also read a ZIP mod placed directly in <code>mods/</code>. See <a href="#zip-mods">ZIP packages</a> for accepted archive layouts.</p></div>
+				</section>
 
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        lightbox.classList.remove('show');
-        setTimeout(() => {
-          lightbox.style.display = 'none';
-          lightboxImg.src = '';
-          document.body.style.overflow = 'auto';
-        }, 150);
-      }
-    });
-  </script>
+				<section class="doc-section" id="structure" data-search="folder structure directory tree mod files organization">
+					<div class="section-kicker"><span>09</span> PROJECT LAYOUT</div>
+					<h2>Keep files where the engine expects them</h2>
+					<p>Use this as a starting point. Add only the directories your mod needs.</p>
+					<div class="code-card">
+						<div class="code-head"><span>my-first-mod/</span><button class="copy-button" type="button" data-copy="tree-code">Copy</button></div>
+						<pre><code id="tree-code">my-first-mod/
+├── mod.json
+├── icon.png                 # optional library artwork
+├── data/
+│   ├── songList.txt         # songs shown in Freeplay
+│   ├── charts/&lt;song&gt;/      # chart JSON
+│   ├── characters/          # character definitions
+│   ├── stages/              # stage definitions
+│   ├── weeks/               # week definitions
+│   └── scripts/             # HScript files
+├── images/
+│   ├── characters/
+│   └── icons/
+├── songs/&lt;song&gt;/
+│   ├── Inst.ogg
+│   └── Voices.ogg
+└── videos/</code></pre>
+					</div>
+					<div class="two-column-notes">
+						<div><span class="note-label">FOLDER ID</span><p>The folder name is used to identify the mod and is shown when no display name is set.</p></div>
+						<div><span class="note-label">CASE</span><p>Keep spelling and capitalization consistent between filenames and references in your content.</p></div>
+					</div>
+				</section>
+
+				<section class="doc-section" id="manifest" data-search="manifest metadata mod.json name description author version icon">
+					<div class="section-kicker"><span>10</span> MOD IDENTITY</div>
+					<h2>Describe it with <code>mod.json</code></h2>
+					<p>The manifest lives at the mod root. The Mod Library reads its display name, description, author, and version. All fields are optional; missing values use sensible defaults.</p>
+					<div class="code-card">
+						<div class="code-head"><span>mod.json</span><button class="copy-button" type="button" data-copy="manifest-code">Copy</button></div>
+						<pre><code id="manifest-code">{
+	"name": "My First Mod",
+	"description": "A short summary shown in the Mod Library.",
+	"author": "Your Name",
+	"version": "1.0.0"
+}</code></pre>
+					</div>
+					<div class="manifest-fields">
+						<div><code>name</code><span>Display name</span><small>Shown as the mod title.</small></div>
+						<div><code>description</code><span>Summary</span><small>Displayed in the details panel.</small></div>
+						<div><code>author</code><span>Creator</span><small>Plain text attribution.</small></div>
+						<div><code>version</code><span>Release label</span><small>For example, <code>1.0.0</code>.</small></div>
+					</div>
+					<p class="inline-note"><code>icon.png</code> is optional. Place it beside <code>mod.json</code>; the Mod Library displays it when available.</p>
+				</section>
+
+				<section class="doc-section" id="song-list" data-search="freeplay song list songList.txt song name character week difficulty">
+					<div class="section-kicker"><span>02</span> FIRST: FREEPLAY</div>
+					<h2>Register songs</h2>
+					<p>Create <code>data/songList.txt</code>. This is the supported location. Add one song per line using colon-separated fields:</p>
+					<div class="code-card code-card-compact">
+						<div class="code-head"><span>data/songList.txt</span><button class="copy-button" type="button" data-copy="song-list-code">Copy</button></div>
+						<pre><code id="song-list-code">song-name:icon-name:week-number
+song-name:icon-name:week-number:easy,normal,hard</code></pre>
+					</div>
+					<div class="field-table" role="table" aria-label="Song list fields">
+						<div class="field-row field-header" role="row"><span role="columnheader">FIELD</span><span role="columnheader">MEANING</span><span role="columnheader">EXAMPLE</span></div>
+						<div class="field-row" role="row"><code>song-name</code><span>Song/chart folder name</span><code>cool-beat</code></div>
+						<div class="field-row" role="row"><code>icon-name</code><span>Freeplay health icon</span><code>bf</code></div>
+						<div class="field-row" role="row"><code>week-number</code><span>Week index</span><code>0</code></div>
+						<div class="field-row" role="row"><code>difficulties</code><span>Optional comma-separated list</span><code>easy,normal,hard</code></div>
+					</div>
+					<p class="inline-note">If difficulties are omitted, the engine uses Easy, Normal, and Hard. Keep the song name aligned with its chart directory under <code>data/charts/</code>.</p>
+				</section>
+
+				<section class="doc-section" id="characters" data-search="character json sprite animations health icon offsets spritePath">
+					<div class="section-kicker"><span>03</span> CHARACTERS</div>
+					<h2>Add a playable character</h2>
+					<p>Create <code>data/characters/my-character.json</code> and put its Sparrow sprite atlas in <code>images/characters/</code>. Set <code>spritePath</code> to the atlas path without the extension, and make each animation name match a prefix in the atlas XML.</p>
+					<div class="code-card">
+						<div class="code-head"><span>data/characters/my-character.json</span><button class="copy-button" type="button" data-copy="character-code">Copy</button></div>
+						<pre><code id="character-code">{
+	"animations": [
+		{"anim": "idle", "name": "My Character Idle", "fps": 24, "loop": true, "indices": [], "offsets": [0, 0]},
+		{"anim": "singLEFT", "name": "My Character Left", "fps": 24, "loop": false, "indices": [], "offsets": [0, 0]},
+		{"anim": "singDOWN", "name": "My Character Down", "fps": 24, "loop": false, "indices": [], "offsets": [0, 0]},
+		{"anim": "singUP", "name": "My Character Up", "fps": 24, "loop": false, "indices": [], "offsets": [0, 0]},
+		{"anim": "singRIGHT", "name": "My Character Right", "fps": 24, "loop": false, "indices": [], "offsets": [0, 0]}
+	],
+	"spritePath": "characters/my-character",
+	"healthIcon": "my-character",
+	"scale": 1,
+	"flipX": false,
+	"antialiasing": true,
+	"singDuration": 4,
+	"cameraOffset": [0, 0],
+	"characterOffset": [0, 0]
+}</code></pre>
+					</div>
+					<p>Put the health icon at <code>images/icons/my-character.png</code>. Animation <code>anim</code> is the name used by the engine; animation <code>name</code> is its atlas prefix. Tune offsets and scale for your sprite.</p>
+				</section>
+
+				<section class="doc-section" id="stages" data-search="stage background scenery json objects image position layer zoom camera positions">
+					<div class="section-kicker"><span>04</span> STAGES &amp; BACKGROUNDS</div>
+					<h2>Build a stage from image layers</h2>
+					<p>Create <code>data/stages/my-stage.json</code>. Each entry in <code>objects</code> places an image in the scene. The image path points into <code>images/</code> and omits the <code>.png</code> extension.</p>
+					<div class="code-card">
+						<div class="code-head"><span>data/stages/my-stage.json</span><button class="copy-button" type="button" data-copy="stage-code">Copy</button></div>
+						<pre><code id="stage-code">{
+	"objects": [
+		{
+			"name": "background",
+			"position": [0, 0],
+			"image": "stages/my-stage/background",
+			"scrollFactor": 0.9,
+			"antialiasing": true,
+			"alpha": 1,
+			"layer": 0,
+			"scale": 1
+		}
+	],
+	"defaultCamZoom": 0.9,
+	"bfPosition": [770, 100],
+	"gfPosition": [400, 130],
+	"dadPosition": [100, 100]
+}</code></pre>
+					</div>
+					<p>Save the image as <code>images/stages/my-stage/background.png</code>. Use layer <code>0</code> for the regular scene and <code>1</code> for foreground objects. Add more entries to create parallax scenery; each object has its own position, scroll factor, scale, and transparency.</p>
+				</section>
+
+				<section class="doc-section" id="weeks" data-search="week json story mode songs characters difficulties texture color">
+					<div class="section-kicker"><span>05</span> STORY WEEKS</div>
+					<h2>Group songs into a week</h2>
+					<p>Add a JSON file under <code>data/weeks/</code> to define a Story Mode week. Song names must match your chart/song folders; character values are character IDs.</p>
+					<div class="code-card code-card-compact">
+						<div class="code-head"><span>data/weeks/my-week.json</span><button class="copy-button" type="button" data-copy="week-code">Copy</button></div>
+						<pre><code id="week-code">{
+	"name": "My Week",
+	"texture": "my-week",
+	"songs": ["cool-beat"],
+	"characters": ["bf"],
+	"difficulties": ["easy", "normal", "hard"],
+	"color": "9271FD"
+}</code></pre>
+					</div>
+					<p>The <code>texture</code> value selects the week menu artwork. Set <code>color</code> to the week accent color; it is optional. Add the matching week artwork and ensure every listed song has its chart and audio files.</p>
+				</section>
+
+				<section class="doc-section" id="assets" data-search="assets paths charts characters stages weeks images songs videos scripts">
+					<div class="section-kicker"><span>07</span> CONTENT REFERENCE</div>
+					<h2>Common resource paths</h2>
+					<p>Place files under the mod root using the same path the engine or your script requests.</p>
+					<div class="path-table">
+						<div><code>data/charts/&lt;song&gt;/</code><span>Chart JSON files and difficulties</span></div>
+						<div><code>data/characters/</code><span>Character JSON or TXT definitions</span></div>
+						<div><code>data/events/</code><span>Custom event definitions</span></div>
+						<div><code>data/options/</code><span>Mod-defined settings</span></div>
+						<div><code>data/scripts/</code><span>Scripts loaded with gameplay</span></div>
+						<div><code>data/shaders/</code><span>Custom <code>.frag</code> and <code>.vert</code> shaders</span></div>
+						<div><code>data/stages/</code><span>Stage JSON files</span></div>
+						<div><code>data/states/</code><span>Custom state scripts</span></div>
+						<div><code>data/substates/</code><span>Custom substate scripts</span></div>
+						<div><code>data/weeks/</code><span>Week definitions</span></div>
+						<div><code>images/</code><span>Sprites, atlases, and icons</span></div>
+						<div><code>songs/&lt;song&gt;/</code><span><code>Inst.ogg</code> and <code>Voices.ogg</code></span></div>
+						<div><code>videos/</code><span>Cutscenes such as <code>.mp4</code> files</span></div>
+					</div>
+				</section>
+
+				<section class="doc-section" id="zip-mods" data-search="zip archive package wrapper folder extract zip mods">
+					<div class="section-kicker"><span>11</span> DISTRIBUTION</div>
+					<h2>Package as a ZIP</h2>
+					<p>Put the archive directly inside <code>mods/</code>. The engine indexes and reads entries without extracting the archive.</p>
+					<div class="zip-layouts">
+						<div class="zip-layout"><span class="layout-tag">FLAT ARCHIVE</span><pre><code>my-mod.zip
+├── mod.json
+├── icon.png
+└── data/...</code></pre></div>
+						<div class="zip-layout"><span class="layout-tag">WRAPPED ARCHIVE</span><pre><code>my-mod.zip
+└── my-mod/
+		├── mod.json
+		├── icon.png
+		└── data/...</code></pre></div>
+					</div>
+					<div class="callout callout-coral"><span class="callout-icon">!</span><p>A wrapper folder must match the archive name, with or without the <code>.zip</code> suffix. Avoid nesting unrelated folders inside the archive.</p></div>
+				</section>
+
+				<section class="doc-section" id="scripts" data-search="hscript scripts api hooks create update beatHit stepHit noteMiss goodNoteHit performEvent importScript switchState openSubState options FlxG Paths PlayState Config ModPaths">
+					<div class="section-kicker"><span>06</span> SCRIPTING</div>
+					<h2>Script the gameplay lifecycle</h2>
+					<p>HS Engine runs mod scripts with HScript, a lightweight scripting language with Haxe-like syntax. Scripts are loaded into gameplay in this order: the current song's chart script, each enabled mod's <code>data/scripts/*.hx</code> files, then the current stage script.</p>
+					<div class="path-table script-paths">
+						<div><code>data/charts/&lt;song&gt;/script.hx</code><span>Only for the matching song</span></div>
+						<div><code>data/scripts/&lt;file&gt;.hx</code><span>Loaded for gameplay from each enabled mod</span></div>
+						<div><code>data/stages/&lt;stage&gt;.hx</code><span>Only for the active stage</span></div>
+					</div>
+					<p>Define a function using a hook name below. The engine calls it automatically. Hook return values are ignored; change game objects or use the provided helpers to affect gameplay.</p>
+					<div class="code-card code-card-compact">
+						<div class="code-head"><span>data/scripts/beat-camera.hx</span><button class="copy-button" type="button" data-copy="script-code">Copy</button></div>
+						<pre><code id="script-code">function createPost() {
+	FlxG.log.add("My mod script is ready");
+}
+
+function beatHit(beat) {
+	if (beat % 4 == 0) {
+		camHUD.zoom += 0.02;
+	}
+}</code></pre>
+					</div>
+					<h3>Gameplay hooks</h3>
+					<p>Parameters are passed by the engine. Values marked as an object are the live HaxeFlixel/game objects.</p>
+					<div class="field-table hook-table" role="table" aria-label="Gameplay script hooks">
+						<div class="field-row field-header" role="row"><span role="columnheader">HOOK</span><span role="columnheader">ARGUMENTS</span><span role="columnheader">WHEN IT RUNS</span></div>
+						<div class="field-row" role="row"><code>create()</code><span>None</span><span>After gameplay scripts load, before the PlayState is fully created.</span></div>
+						<div class="field-row" role="row"><code>createPost()</code><span>None</span><span>After the PlayState's normal create step.</span></div>
+						<div class="field-row" role="row"><code>update(elapsed)</code><span>Elapsed time in seconds</span><span>Every gameplay frame, before the normal state update.</span></div>
+						<div class="field-row" role="row"><code>updatePost(elapsed)</code><span>Elapsed time in seconds</span><span>Every gameplay frame, after the normal state update.</span></div>
+						<div class="field-row" role="row"><code>startCountdown()</code><span>None</span><span>When the song countdown is about to start.</span></div>
+						<div class="field-row" role="row"><code>startCutscene()</code><span>None</span><span>When a song cutscene script is found.</span></div>
+						<div class="field-row" role="row"><code>songStart()</code><span>None</span><span>When the audio begins playing.</span></div>
+						<div class="field-row" role="row"><code>beatHit(beat)</code><span>Current beat number</span><span>On each beat.</span></div>
+						<div class="field-row" role="row"><code>stepHit(step)</code><span>Current step number</span><span>On each step.</span></div>
+						<div class="field-row" role="row"><code>generateStaticArrows(player)</code><span>Player side: 0 or 1</span><span>While a receptor arrow is generated.</span></div>
+						<div class="field-row" role="row"><code>bfTurn()</code><span>None</span><span>When the camera switches to the player section.</span></div>
+						<div class="field-row" role="row"><code>dadTurn()</code><span>None</span><span>When the camera switches to the opponent section.</span></div>
+						<div class="field-row" role="row"><code>betweenCharacters()</code><span>None</span><span>When gameplay character groups are inserted into the scene.</span></div>
+						<div class="field-row" role="row"><code>goodNoteHit(note)</code><span>Hit <code>Note</code> object</span><span>When the player hits a note.</span></div>
+						<div class="field-row" role="row"><code>dadNoteHit(note)</code><span>Opponent <code>Note</code> object</span><span>When the opponent hits a note.</span></div>
+						<div class="field-row" role="row"><code>noteMiss(note)</code><span>Missed <code>Note</code> object</span><span>When the player misses a note.</span></div>
+						<div class="field-row" role="row"><code>createNoteSplash(noteData)</code><span>Lane index: 0–3</span><span>When a note splash is created.</span></div>
+						<div class="field-row" role="row"><code>popUpScore(strumTime, note)</code><span>Timing difference and <code>Note</code></span><span>When a score popup is calculated.</span></div>
+						<div class="field-row" role="row"><code>performEvent(event)</code><span>Chart event object</span><span>When a chart event is processed.</span></div>
+						<div class="field-row" role="row"><code>pause()</code><span>None</span><span>When gameplay pauses.</span></div>
+						<div class="field-row" role="row"><code>resume()</code><span>None</span><span>When gameplay resumes.</span></div>
+						<div class="field-row" role="row"><code>gameOver()</code><span>None</span><span>When the player loses.</span></div>
+						<div class="field-row" role="row"><code>endSong()</code><span>None</span><span>When the song begins its end flow.</span></div>
+						<div class="field-row" role="row"><code>destroy()</code><span>None</span><span>When the gameplay state is destroyed.</span></div>
+					</div>
+
+					<h3>Gameplay variables</h3>
+					<p>Gameplay scripts receive the current scene references when loaded. Common values include:</p>
+					<div class="script-globals"><code>SONG</code><code>curSong</code><code>curStage</code><code>curBeat</code><code>curStep</code><code>camGame</code><code>camHUD</code><code>camOther</code><code>camFollow</code><code>camFollowPos</code><code>boyfriend</code><code>dad</code><code>gf</code><code>boyfriendGroup</code><code>dadGroup</code><code>gfGroup</code><code>playerStrums</code><code>dadStrums</code><code>strumLineNotes</code><code>noteSplashes</code><code>mustHitSection</code><code>altAnim</code></div>
+					<p>Use hook arguments such as <code>beat</code>, <code>step</code>, and <code>elapsed</code> for current values; globals like <code>curBeat</code> are initialized when the script loads.</p>
+					<h3>Shared HScript globals</h3>
+					<p>These language types, utility classes, and engine APIs are registered in the script interpreter:</p>
+					<div class="script-global-groups">
+						<div><strong>Language &amp; utilities</strong><div class="api-chip-list"><code>Int</code><code>Float</code><code>Bool</code><code>String</code><code>Array</code><code>Dynamic</code><code>Math</code><code>Std</code><code>Reflect</code><code>StringTools</code><code>Sys</code><code>Json</code><code>Path</code><code>File</code><code>FileSystem</code></div></div>
+						<div><strong>Flixel &amp; assets</strong><div class="api-chip-list"><code>FlxG</code><code>FlxMath</code><code>FlxSound</code><code>FlxSprite</code><code>FlxText</code><code>FlxGraphic</code><code>FlxTween</code><code>FlxEase</code><code>FlxCamera</code><code>FlxGroup</code><code>FlxTypedGroup</code><code>FlxTimer</code><code>Assets</code><code>Window</code><code>FlxAngle</code><code>FlxAtlasFrames</code><code>FlxAtlas</code></div></div>
+						<div><strong>HS Engine</strong><div class="api-chip-list"><code>PlayState</code><code>CoolUtil</code><code>Paths</code><code>Character</code><code>Boyfriend</code><code>Song</code><code>Controls</code><code>Conductor</code><code>Note</code><code>Config</code><code>ModPaths</code><code>MusicBeatState</code><code>MusicBeatSubstate</code><code>BGSprite</code><code>FunkinShader</code><code>CustomShader</code><code>FlxColor</code><code>FlxKey</code><code>BlendMode</code><code>FlxCameraFollowStyle</code><code>FlxTextAlign</code><code>FlxTextBorderStyle</code><code>StringHelper</code></div></div>
+						<div><strong>Gameplay-only helpers</strong><div class="api-chip-list"><code>add</code><code>remove</code><code>insert</code><code>getObject</code><code>removeStage</code><code>startVideo</code></div></div>
+					</div>
+					<p class="inline-note"><code>FlxVideo</code>, <code>FlxVideoSprite</code>, and <code>VideoHandler</code> are registered only in builds compiled with video support. <code>Sys</code>, <code>File</code>, and <code>FileSystem</code> provide direct system access.</p>
+
+					<h3>Built-in helper functions</h3>
+					<div class="path-table script-paths">
+						<div><code>add(object)</code>, <code>remove(object)</code>, <code>insert(index, object)</code><span>Add, remove, or insert a display object into the current gameplay/state container.</span></div>
+						<div><code>getObject(name)</code><span>Gameplay only: get a named object from <code>data/stages/</code>.</span></div>
+						<div><code>removeStage()</code><span>Gameplay only: remove the engine's default stage background sprites.</span></div>
+						<div><code>startVideo(name)</code><span>Gameplay only: start <code>videos/&lt;name&gt;.mp4</code> on video-enabled builds; pass the name without extension.</span></div>
+						<div><code>importScript(path)</code><span>Run another mod script; pass its mod-root path without <code>.hx</code>, for example <code>data/scripts/shared</code>.</span></div>
+						<div><code>switchState(name)</code><span>Open <code>data/states/&lt;name&gt;.hx</code>; pass the state name without extension.</span></div>
+						<div><code>openSubState(name, pauseGame)</code>, <code>closeSubState()</code><span>Open a substate, optionally pause the song, then close the active substate.</span></div>
+						<div><code>getOption(name)</code>, <code>getOptionValue(name)</code><span>Read an engine or mod option.</span></div>
+						<div><code>setOption(name, value)</code>, <code>setOptionValue(name, value)</code><span>Change an option value.</span></div>
+						<div><code>optionBool(name, value, isUnselectable)</code>, <code>optionInt(name, value, min, max, step, isUnselectable)</code><span>Define boolean or integer mod options.</span></div>
+						<div><code>optionFloat(name, value, min, max, step, isUnselectable)</code>, <code>optionString(name, value, values, isUnselectable)</code><span>Define float or choice-list options.</span></div>
+						<div><code>getOptionLabel(name)</code><span>Get the formatted label for an option.</span></div>
+					</div>
+					<p>Example: <code>optionFloat("Impact", 1, 0, 2, 0.1)</code> defines a setting; read it later with <code>getOption("Impact")</code>.</p>
+					<p>Option values use <code>getOption</code>/<code>setOption</code> or <code>getOptionValue</code>/<code>setOptionValue</code>. Use <code>getOptionLabel(name)</code> to get the label shown by the settings UI.</p>
+
+					<h3>Custom states and substates</h3>
+					<p>Place state scripts in <code>data/states/</code> and open one with <code>switchState("MyState")</code>. Put substates in <code>data/substates/</code> and open them with <code>openSubState("MySubstate", true)</code>. Both support <code>create</code>, <code>createPost</code>, <code>update(elapsed)</code>, <code>updatePost(elapsed)</code>, <code>stepHit(step)</code>, and <code>beatHit(beat)</code>. They also receive <code>members</code>, <code>controls</code>, <code>curBeat</code>, <code>curStep</code>, and <code>this</code>.</p>
+					<div class="callout callout-coral"><span class="callout-icon">!</span><p>HScript exposes filesystem access and powerful engine objects. Scripts are not sandboxed; only run code from sources you trust. HScript syntax is similar to Haxe but is not a full Haxe compiler.</p></div>
+				</section>
+
+				<section class="doc-section" id="mod-library" data-search="Mod Library enable disable settings auto enable new mods controls scroll refresh">
+					<div class="section-kicker"><span>12</span> IN GAME</div>
+					<h2>Use the Mod Library</h2>
+					<div class="control-grid">
+						<div><kbd>↑</kbd><kbd>↓</kbd><span>Select a mod</span></div>
+						<div><kbd>Wheel</kbd><span>Scroll the installed list</span></div>
+						<div><kbd>Enter</kbd><span>Enable or disable</span></div>
+						<div><kbd>R</kbd><span>Refresh installed mods</span></div>
+						<div><kbd>7</kbd><span>Open the editor menu</span></div>
+						<div><kbd>Esc</kbd><span>Return to the main menu</span></div>
+					</div>
+					<p>Each entry shows its name, version, enabled state, and whether it came from a folder or ZIP. The selected mod's description, author, and icon appear in the details panel.</p>
+					<p>To choose whether newly detected mods start enabled, open <strong>Options → Preferences → MODS → Automatically Enable New Mods</strong>.</p>
+				</section>
+
+				<section class="doc-section" id="troubleshooting" data-search="troubleshooting missing song chart icon manifest zip case path">
+					<div class="section-kicker"><span>13</span> QUICK FIXES</div>
+					<h2>When something is missing</h2>
+					<details class="faq-item"><summary>My song does not appear in Freeplay</summary><p>Check that the list is at <code>data/songList.txt</code>, that each line uses colon-separated fields, and that the mod is enabled.</p></details>
+					<details class="faq-item"><summary>The song appears, but its chart cannot load</summary><p>Check the chart under <code>data/charts/&lt;song-name&gt;/</code> and make sure the chart filename matches the song and selected difficulty.</p></details>
+					<details class="faq-item"><summary>The ZIP is listed but its files are not found</summary><p>Use a flat archive or one wrapper folder matching the ZIP filename. Confirm paths and capitalization inside the archive.</p></details>
+					<details class="faq-item"><summary>The Mod Library shows fallback metadata</summary><p>Put a valid JSON <code>mod.json</code> at the mod root. Its <code>name</code>, <code>description</code>, <code>author</code>, and <code>version</code> values should be strings.</p></details>
+				</section>
+
+				<footer class="doc-footer">
+					<img src="img/hs-engine.png" alt="" aria-hidden="true">
+					<p><strong>HS Engine Mod API</strong><span>Built for Friday Night Funkin': HS Engine.</span></p>
+					<a href="../README.md">Project README <span aria-hidden="true">↗</span></a>
+				</footer>
+			</div>
+		</main>
+		<button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="Close navigation"></button>
+	</div>
 </body>
 </html>
