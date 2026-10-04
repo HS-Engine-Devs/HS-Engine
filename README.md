@@ -9,14 +9,10 @@ building and managing mods.
 
 ## ModAPI
 
-The ModAPI documents how to extend HS Engine with custom content. The full API
-reference is still growing; the current handbook covers mod creation and supported
-resources.
-
-### Mod Support
-
-Learn how to install folder and ZIP mods, define `mod.json`, add songs to Freeplay, and
-use the in-game Mod Library in the [HS Engine Mod API documentation](docs/index.html).
+The ModAPI documents how to extend HS Engine with custom content. The documentation
+lives in the `docs/` folder, starting at [docs/index.html](docs/index.html). The full
+API reference is still growing; the current handbook covers mod creation and
+supported resources.
 
 ## Credits
 
