@@ -513,11 +513,11 @@ class CharacterEditorState extends MusicBeatState {
 		#if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath:String = 'mods/' + modFolder.folder + '/data/characters/';
-				if (sys.FileSystem.exists(modFolderPath)) {
-					for (charFile in sys.FileSystem.readDirectory(modFolderPath)) {
-						var path:String = haxe.io.Path.join([modFolderPath, charFile]);
-						if (!sys.FileSystem.isDirectory(path) && (charFile.endsWith('.json') || (charFile.endsWith('.txt') && charFile != 'github-moment.txt'))) {
+				var modFolderPath:String = ModPaths.modPath(modFolder.folder, 'data/characters');
+				if (ModPaths.isDirectory(modFolderPath)) {
+					for (charFile in ModPaths.readDirectory(modFolderPath)) {
+						var path:String = ModPaths.modPath(modFolder.folder, 'data/characters/' + charFile);
+						if (!ModPaths.isDirectory(path) && (charFile.endsWith('.json') || (charFile.endsWith('.txt') && charFile != 'github-moment.txt'))) {
 							var checkChar:String = charFile.endsWith('.json') ? charFile.substr(0, charFile.length - 5) : charFile.substr(0, charFile.length - 4);
 							if (!loadedCharacters.exists(checkChar)) {
 								charList.push(checkChar);
@@ -611,15 +611,15 @@ class CharacterEditorState extends MusicBeatState {
 	function loadCharJson(character:String) {
 		#if sys
 		var path:String = ModPaths.data("characters/" + character);
-		if (!sys.FileSystem.exists(path))
+		if (!ModPaths.exists(path))
 			path = Paths.json("characters/" + character);
-		if (!sys.FileSystem.exists(path))
+		if (!ModPaths.exists(path))
 			path = ModPaths.modFolder("data/characters/" + character + ".txt");
-		if (!sys.FileSystem.exists(path))
+		if (!ModPaths.exists(path))
 			path = Paths.txt("characters/" + character);
-		if (!sys.FileSystem.exists(path))
+		if (!ModPaths.exists(path))
 			path = Paths.json("characters/bf");
-		var rawJson:String = sys.io.File.getContent(path);
+		var rawJson:String = ModPaths.readContent(path);
 		#else
 		var path:String = Paths.json("characters/" + character);
 		if (!Assets.exists(path))

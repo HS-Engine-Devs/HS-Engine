@@ -87,7 +87,7 @@ class Paths
     {
 		#if sys
 		var file:String = ModPaths.modFolder('data/shaders/$key.frag');
-		if(sys.FileSystem.exists(file)) {
+		if(ModPaths.exists(file)) {
 			return file;
 		}
 		#end
@@ -98,7 +98,7 @@ class Paths
     {
 		#if sys
 		var file:String = ModPaths.modFolder('data/shaders/$key.vert');
-		if(sys.FileSystem.exists(file)) {
+		if(ModPaths.exists(file)) {
 			return file;
 		}
 		#end
@@ -124,8 +124,8 @@ class Paths
 	{
 		#if sys
 		var file:String = ModPaths.modFolder('videos/$key.mp4');
-		if(sys.FileSystem.exists(file)) {
-			return file;
+		if(ModPaths.exists(file)) {
+			return ModPaths.physicalPath(file);
 		}
 		#end
 		return getPath('videos/$key.mp4', TEXT, library);
@@ -172,10 +172,10 @@ class Paths
 		#if sys
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
-		if(sys.FileSystem.exists(ModPaths.modFolder('images/$key.xml'))) {
+		if(ModPaths.exists(ModPaths.modFolder('images/$key.xml'))) {
 			xmlExists = true;
 		}
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? sys.io.File.getContent(ModPaths.modFolder('images/$key.xml')) : file('images/$key.xml', library)));
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? ModPaths.readContent(ModPaths.modFolder('images/$key.xml')) : file('images/$key.xml', library)));
 		#else
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
 		#end
@@ -190,8 +190,8 @@ class Paths
 	{
 		#if sys
 		var shit:String = ModPaths.modFolder('images/$key');
-		if(sys.FileSystem.exists(shit)) {
-			return shit;
+		if(ModPaths.exists(shit)) {
+			return ModPaths.physicalPath(shit);
 		}
 		#end
 		return file('images/$key', library);
@@ -203,7 +203,7 @@ class Paths
 			return true;
 		}
 		#if sys
-		if(sys.FileSystem.exists(ModPaths.modFolder(key))) {
+		if(ModPaths.exists(ModPaths.modFolder(key))) {
 			return true;
 		}
 		#end
@@ -219,9 +219,10 @@ class Paths
 
     #if sys
 	static private function addCustomGraphic(key:String):FlxGraphic {
-		if(sys.FileSystem.exists(ModPaths.image(key))) {
+		var imagePath:String = ModPaths.image(key);
+		if(ModPaths.exists(imagePath)) {
 			if(!customImagesLoaded.exists(key)) {
-				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(ModPaths.image(key)));
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(BitmapData.fromBytes(ModPaths.readBytes(imagePath)));
 				newGraphic.persist = true;
 				customImagesLoaded.set(key, newGraphic);
 			}
@@ -231,9 +232,9 @@ class Paths
 	}
 
 	inline static private function returnSongFile(file:String):Sound {
-        if(sys.FileSystem.exists(file)) {
+		if(ModPaths.exists(file)) {
             if(!customSoundsLoaded.exists(file)) {
-                customSoundsLoaded.set(file, Sound.fromFile(file));
+		        customSoundsLoaded.set(file, Sound.fromFile(ModPaths.physicalPath(file)));
             }
             return customSoundsLoaded.get(file);
         }

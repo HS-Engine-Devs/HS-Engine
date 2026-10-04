@@ -242,8 +242,8 @@ class Note extends FlxSprite
 	public function loadNoteJson(noteType:String):Void {
 		#if sys
 		if (!noteJsonMap.exists(noteType)) {
-			if (sys.FileSystem.exists(ModPaths.data("notes/" + noteType))) {
-				var jsonContent = sys.io.File.getContent(ModPaths.data("notes/" + noteType));
+			if (ModPaths.exists(ModPaths.data("notes/" + noteType))) {
+				var jsonContent = ModPaths.readContent(ModPaths.data("notes/" + noteType));
 				var parsedJson = haxe.Json.parse(jsonContent);
 				if (parsedJson != null) {
 					noteJsonMap.set(noteType, parsedJson);

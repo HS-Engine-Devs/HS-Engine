@@ -55,9 +55,9 @@ class FreeplayState extends MusicBeatState
 		#if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath:String = 'mods/' + modFolder.folder;
-				if (sys.FileSystem.exists(modFolderPath + '/songlist.txt')) {
-				    var songList = modTxtFile(modFolderPath + '/songlist.txt');
+				var songListPath:String = ModPaths.modPath(modFolder.folder, 'data/songList.txt');
+				if (ModPaths.exists(songListPath)) {
+				    var songList = modTxtFile(songListPath);
 					for (i in 0...songList.length) {
 						var data:Array<String> = songList[i].split(":");
 						var diffsStr = data[3];
@@ -94,7 +94,8 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+			var displayName:String = formatFreeplayDisplayName(songs[i].songName);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, displayName, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
@@ -225,7 +226,7 @@ class FreeplayState extends MusicBeatState
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
 
 			#if sys
-			if (!Assets.exists(Paths.json('charts/' + songs[curSelected].songName.toLowerCase() + '/' + poop)) && !sys.FileSystem.exists(ModPaths.data('charts/' + songs[curSelected].songName.toLowerCase() + '/' + poop)))
+			if (!Assets.exists(Paths.json('charts/' + songs[curSelected].songName.toLowerCase() + '/' + poop)) && !ModPaths.exists(ModPaths.data('charts/' + songs[curSelected].songName.toLowerCase() + '/' + poop)))
 			#else
 			if (!Assets.exists(Paths.json('charts/' + songs[curSelected].songName.toLowerCase() + '/' + poop)))
 		    #end
@@ -317,13 +318,18 @@ class FreeplayState extends MusicBeatState
 	#if sys
 	function modTxtFile(path:String):Array<String>
 	{
-		var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
+		var daList:Array<String> = ModPaths.readContent(path).trim().split('\n');
 		for (i in 0...daList.length) {
 			daList[i] = daList[i].trim();
 		}
 		return daList;
 	}
 	#end
+
+	private static function formatFreeplayDisplayName(name:String):String
+	{
+		return name.split("_").join(" ").split("-").join(" ");
+	}
 }
 
 class SongMetadata

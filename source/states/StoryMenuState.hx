@@ -397,11 +397,11 @@ class StoryMenuState extends MusicBeatState
         #if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath:String = 'mods/' + modFolder.folder + '/data/weeks/';
-				if (sys.FileSystem.isDirectory(modFolderPath)) {
-					for (weekJson in sys.FileSystem.readDirectory(modFolderPath)) {
+				var modFolderPath:String = ModPaths.modPath(modFolder.folder, 'data/weeks');
+				if (ModPaths.isDirectory(modFolderPath)) {
+					for (weekJson in ModPaths.readDirectory(modFolderPath)) {
 						if (weekJson != null && weekJson.endsWith('.json')) {
-							var jsonContent:String = sys.io.File.getContent(modFolderPath + weekJson);
+							var jsonContent:String = ModPaths.readContent(ModPaths.modPath(modFolder.folder, 'data/weeks/' + weekJson));
 							var weekData:Dynamic = Json.parse(jsonContent);
 							addWeek(weekData);
 						}

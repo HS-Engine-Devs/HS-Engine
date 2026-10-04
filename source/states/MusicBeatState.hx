@@ -35,12 +35,13 @@ class MusicBeatState extends FlxUIState
         #if sys
 		if (!curState.endsWith("PlayState")) {
 			for (mod in ModPaths.getModFolders()) {
-				if (mod.enabled && sys.FileSystem.isDirectory('mods/' + mod.folder + '/data/states')) {
-					for (file in sys.FileSystem.readDirectory('mods/' + mod.folder + '/data/states/')) {
+				var statesPath:String = ModPaths.modPath(mod.folder, 'data/states');
+				if (mod.enabled && ModPaths.isDirectory(statesPath)) {
+					for (file in ModPaths.readDirectory(statesPath)) {
 						if (file != null && file.endsWith('.hx')) {
 							var stateName:String = CoolUtil.formatClass(this).split('states/')[1];
-							var filePath:String = 'mods/' + mod.folder + '/data/states/' + file;
-							if (file == stateName + ".hx" && sys.FileSystem.exists(filePath)) {
+							var filePath:String = ModPaths.modPath(mod.folder, 'data/states/' + file);
+							if (file == stateName + ".hx" && ModPaths.exists(filePath)) {
 								scriptState.loadScript(filePath);
 							}
 						}

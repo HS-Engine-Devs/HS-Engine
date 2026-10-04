@@ -53,8 +53,8 @@ class Song
 
 		#if sys
 		var moddyFile:String = ModPaths.data("charts/" + folder.toLowerCase() + '/' + jsonInput.toLowerCase());
-		if(FileSystem.exists(moddyFile)) {
-		    rawJson = File.getContent(moddyFile).trim();
+		if(ModPaths.exists(moddyFile)) {
+		    rawJson = ModPaths.readContent(moddyFile).trim();
 		}
 		#end
 

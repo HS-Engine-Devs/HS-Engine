@@ -906,8 +906,8 @@ class PlayState extends MusicBeatState
               }
 
 		#if sys
-		if (sys.FileSystem.exists(ModPaths.data("stages/" + SONG.stage))) {
-			new Stage(sys.io.File.getContent(ModPaths.data("stages/" + SONG.stage)));
+		if (ModPaths.exists(ModPaths.data("stages/" + SONG.stage))) {
+			new Stage(ModPaths.readContent(ModPaths.data("stages/" + SONG.stage)));
 			defaultCamZoom = Stage.stageZoom;
 			stageBg.alpha = 0;
 			stageFront.alpha = 0;
@@ -953,7 +953,7 @@ class PlayState extends MusicBeatState
 		gf.scrollFactor.set(0.95, 0.95);
 
 		#if sys
-		if (sys.FileSystem.exists(ModPaths.data("stages/" + SONG.stage))) {
+		if (ModPaths.exists(ModPaths.data("stages/" + SONG.stage))) {
 			gf.x = Stage.gfPos[0];
 			gf.y = Stage.gfPos[1];
 		}
@@ -991,7 +991,7 @@ class PlayState extends MusicBeatState
 		dad = new Character(100, 100, SONG.player2);
 
         #if sys
-		if (sys.FileSystem.exists(ModPaths.data("stages/" + SONG.stage))) {
+		if (ModPaths.exists(ModPaths.data("stages/" + SONG.stage))) {
 			dad.x = Stage.dadPos[0];
 			dad.y = Stage.dadPos[1];
 		}
@@ -1029,7 +1029,7 @@ class PlayState extends MusicBeatState
 		boyfriend = new Boyfriend(770, 100, SONG.player1);
 
         #if sys
-		if (sys.FileSystem.exists(ModPaths.data("stages/" + SONG.stage))) {
+		if (ModPaths.exists(ModPaths.data("stages/" + SONG.stage))) {
 			boyfriend.x = Stage.bfPos[0];
 			boyfriend.y = Stage.bfPos[1];
 		}
@@ -1402,7 +1402,7 @@ class PlayState extends MusicBeatState
 				default:
 					#if sys
                     var cutscenePath:String = ModPaths.script("data/cutscenes/" + SONG.song.toLowerCase());
-                    if (sys.FileSystem.exists(cutscenePath)) {
+					if (ModPaths.exists(cutscenePath)) {
                         addScript(cutscenePath); 
                         callOnScripts('startCutscene', []);
                     } else {
@@ -1431,7 +1431,7 @@ class PlayState extends MusicBeatState
 
 	#if sys
     function addScript(path:String) {
-        if (!sys.FileSystem.exists(path)) return;
+		if (!ModPaths.exists(path)) return;
 
         var newScript:ModScripts = new ModScripts();
         var variables = newScript.interp.variables;
@@ -1527,11 +1527,11 @@ class PlayState extends MusicBeatState
 
         for (modFolder in ModPaths.getModFolders()) {
             if (modFolder.enabled) {
-                var modScriptFolderPath:String = 'mods/' + modFolder.folder + '/data/scripts/';
-                if (sys.FileSystem.exists(modScriptFolderPath)) {
-                    for (file in sys.FileSystem.readDirectory(modScriptFolderPath)) {
+				var modScriptFolderPath:String = ModPaths.modPath(modFolder.folder, 'data/scripts');
+				if (ModPaths.isDirectory(modScriptFolderPath)) {
+					for (file in ModPaths.readDirectory(modScriptFolderPath)) {
                         if (file != null && file.endsWith('.hx')) {
-                            addScript(haxe.io.Path.join([modScriptFolderPath, file]));
+							addScript(ModPaths.modPath(modFolder.folder, 'data/scripts/' + file));
                         }
                     }
                 }

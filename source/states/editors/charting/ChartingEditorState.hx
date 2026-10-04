@@ -340,6 +340,13 @@ class ChartingEditorState extends MusicBeatState
 		redoBtn.setGraphicSize(64, 24);
 		add(redoBtn);
 
+		//var scriptBtn:FlxButton = new FlxButton(150, 10, "Script", function() {
+		//	FlxG.switchState(new states.editors.script.ScriptEditorState());
+		//});
+		//scriptBtn.scrollFactor.set(0, 0);
+		//scriptBtn.setGraphicSize(64, 24);
+		//add(scriptBtn);
+
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
@@ -385,11 +392,11 @@ class ChartingEditorState extends MusicBeatState
 		#if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath = 'mods/' + modFolder.folder + '/data/events/';
-				if (sys.FileSystem.isDirectory(modFolderPath)) {
-					for (eventJson in sys.FileSystem.readDirectory(modFolderPath)) {
+				var modFolderPath = ModPaths.modPath(modFolder.folder, 'data/events');
+				if (ModPaths.isDirectory(modFolderPath)) {
+					for (eventJson in ModPaths.readDirectory(modFolderPath)) {
 						if (eventJson != null && eventJson.endsWith('.json')) {
-							var jsonContent = sys.io.File.getContent(modFolderPath + eventJson);
+							var jsonContent = ModPaths.readContent(ModPaths.modPath(modFolder.folder, 'data/events/' + eventJson));
 							var parsedData:Dynamic = haxe.Json.parse(jsonContent);
 							if (Std.is(parsedData, Array)) {
 								var eventArray:Array<Dynamic> = cast parsedData;
@@ -621,10 +628,10 @@ class ChartingEditorState extends MusicBeatState
  		#if sys
  		for (i in 0...directories.length) {
  			var directory:String = directories[i];
- 			if(sys.FileSystem.exists(directory)) {
- 				for (file in sys.FileSystem.readDirectory(directory)) {
- 					var path = haxe.io.Path.join([directory, file]);
- 					if (!sys.FileSystem.isDirectory(path) && file.endsWith('.json')) {
+			if(ModPaths.isDirectory(directory)) {
+				for (file in ModPaths.readDirectory(directory)) {
+					var path = directory + (directory.endsWith('/') ? '' : '/') + file;
+					if (!ModPaths.isDirectory(path) && file.endsWith('.json')) {
  						var charToCheck:String = file.substr(0, file.length - 5);
  						if(!charToCheck.endsWith('-dead') && !tempMap.exists(charToCheck)) {
  							tempMap.set(charToCheck, true);
@@ -1739,8 +1746,8 @@ class ChartingEditorState extends MusicBeatState
 
         #if sys
         var moddyFile:String = ModPaths.data("characters/" + char);
-        if(sys.FileSystem.exists(moddyFile)) {
-            rawJson = sys.io.File.getContent(moddyFile);
+		if(ModPaths.exists(moddyFile)) {
+			rawJson = ModPaths.readContent(moddyFile);
         }
         #end
 

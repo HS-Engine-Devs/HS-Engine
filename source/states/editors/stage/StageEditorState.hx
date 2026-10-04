@@ -402,11 +402,11 @@ class StageEditorState extends MusicBeatState {
 		#if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath:String = 'mods/' + modFolder.folder + '/data/stages/';
-				if (sys.FileSystem.exists(modFolderPath)) {
-					for (stageJson in sys.FileSystem.readDirectory(modFolderPath)) {
-						var path:String = haxe.io.Path.join([modFolderPath, stageJson]);
-						if (!sys.FileSystem.isDirectory(path) && stageJson.endsWith('.json')) {
+				var modFolderPath:String = ModPaths.modPath(modFolder.folder, 'data/stages');
+				if (ModPaths.isDirectory(modFolderPath)) {
+					for (stageJson in ModPaths.readDirectory(modFolderPath)) {
+						var path:String = ModPaths.modPath(modFolder.folder, 'data/stages/' + stageJson);
+						if (!ModPaths.isDirectory(path) && stageJson.endsWith('.json')) {
 							var checkStage:String = stageJson.substr(0, stageJson.length - 5);
 							if (!loadedStages.exists(checkStage)) {
 								stageList.push(checkStage);
@@ -431,11 +431,11 @@ class StageEditorState extends MusicBeatState {
 		#if sys
 		for (modFolder in ModPaths.getModFolders()) {
 			if (modFolder.enabled) {
-				var modFolderPath:String = 'mods/' + modFolder.folder + '/data/characters/';
-				if (sys.FileSystem.exists(modFolderPath)) {
-					for (charFile in sys.FileSystem.readDirectory(modFolderPath)) {
-						var path:String = haxe.io.Path.join([modFolderPath, charFile]);
-						if (!sys.FileSystem.isDirectory(path) && (charFile.endsWith('.json') || (charFile.endsWith('.txt') && charFile != 'github-moment.txt'))) {
+				var modFolderPath:String = ModPaths.modPath(modFolder.folder, 'data/characters');
+				if (ModPaths.isDirectory(modFolderPath)) {
+					for (charFile in ModPaths.readDirectory(modFolderPath)) {
+						var path:String = ModPaths.modPath(modFolder.folder, 'data/characters/' + charFile);
+						if (!ModPaths.isDirectory(path) && (charFile.endsWith('.json') || (charFile.endsWith('.txt') && charFile != 'github-moment.txt'))) {
 							var checkChar:String = charFile.endsWith('.json') ? charFile.substr(0, charFile.length - 5) : charFile.substr(0, charFile.length - 4);
 							if (!loadedCharacters.exists(checkChar)) {
 								charList.push(checkChar);

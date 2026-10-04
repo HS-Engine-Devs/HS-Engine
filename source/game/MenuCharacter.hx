@@ -35,11 +35,11 @@ class MenuCharacter extends FlxSprite
 			default:
 				#if sys
 				var path:String = ModPaths.data("weeks/characters/" + character);
-				if (!sys.FileSystem.exists(path))
+				if (!ModPaths.exists(path))
 					path = Paths.json("weeks/characters/" + character);
-				if (!sys.FileSystem.exists(path))
+				if (!ModPaths.exists(path))
 					path = Paths.json("weeks/characters/bf");
-				var rawJson:String = sys.io.File.getContent(path);
+				var rawJson:String = ModPaths.readContent(path);
 				#else
 				var rawJson = Assets.getText(Paths.json("weeks/characters/" + character));
 				#end
