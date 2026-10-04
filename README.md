@@ -27,7 +27,7 @@ supported resources.
 ### HS Engine Owner
 | Credits Icon | Username | Involvement |
 | ------------ | -------- | ----------- |
-| <img src="docs/img/gidk.png" width="64" height="64"/> | [Gidk](https://www.youtube.com/watch?v=al74RjD4Ans) | HS engine owner (he resigned to be a programmer for this engine because he went to buy some milk lol)
+| <img src="docs/img/gidk.png" width="64" height="64"/> | [Gidk](https://www.youtube.com/watch?v=al74RjD4Ans) | HS engine owner (he resigned to be a programmer for this engine because he went to buy some milk ig)
 
 ### Special Thanks
 | Credits Icon | Username | Involvement |
