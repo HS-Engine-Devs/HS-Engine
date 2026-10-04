@@ -45,6 +45,7 @@ class ModState extends MusicBeatState {
     private static inline var ROW_HEIGHT:Float = 58;
 
     override function create():Void {
+        FlxG.mouse.visible = true;
 		#if desktop
 		DiscordClient.changePresence("In the Mod Library", null);
 		#end
@@ -81,7 +82,7 @@ class ModState extends MusicBeatState {
         reloadMods();
 
         var controlsText = new FlxText(42, FlxG.height - 48, FlxG.width - 84,
-            "UP/DOWN  SELECT     WHEEL  SCROLL     ENTER  ENABLE/DISABLE     R  REFRESH     7  EDITOR     ESC  BACK", 16);
+            "UP/DOWN  SELECT     WHEEL  SCROLL     CLICK / ENTER  TOGGLE     R  REFRESH     7  EDITOR     ESC  BACK", 16);
         controlsText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         controlsText.borderSize = 1.5;
         add(controlsText);
@@ -233,6 +234,16 @@ class ModState extends MusicBeatState {
             updateListLayout();
         }
 
+        if (FlxG.mouse.justPressed) {
+            for (i in 0...rowBackgrounds.length) {
+                if (rowBackgrounds[i].visible && FlxG.mouse.overlaps(rowBackgrounds[i])) {
+                    selectedIndex = i;
+                    toggleSelectedMod();
+                    return;
+                }
+            }
+        }
+
         if (controls.UP_P) {
             if (mods.length == 0) return;
             selectedIndex = (selectedIndex - 1 + mods.length) % mods.length;
@@ -244,12 +255,14 @@ class ModState extends MusicBeatState {
             FlxG.sound.play(Paths.sound('scrollMenu'));
             updateSelection();
         } else if (FlxG.keys.justPressed.SEVEN) {
+            FlxG.mouse.visible = false;
             FlxG.switchState(new states.editors.EditorMenuState());
         } else if (FlxG.keys.justPressed.R) {
             ModPaths.loadMods();
             reloadMods();
             FlxG.sound.play(Paths.sound('scrollMenu'));
         } else if (controls.BACK) {
+            FlxG.mouse.visible = false;
             if (ModPaths.checkRestartStatus()) {
                 TitleState.initialized = false;
                 TitleState.closedState = false;
@@ -261,12 +274,15 @@ class ModState extends MusicBeatState {
                 FlxG.switchState(new MainMenuState());
             }
         } else if (controls.ACCEPT) {
-            if (selectedIndex >= 0 && selectedIndex < mods.length) {
-                var selectedMod = mods[selectedIndex];
-                ModPaths.toggleMod(selectedMod.folder, !selectedMod.enabled);
-                reloadMods();
-            }
+            toggleSelectedMod();
         }
+    }
+
+    private function toggleSelectedMod():Void {
+        if (selectedIndex < 0 || selectedIndex >= mods.length) return;
+        var selectedMod = mods[selectedIndex];
+        ModPaths.toggleMod(selectedMod.folder, !selectedMod.enabled);
+        reloadMods();
     }
 
     private function updateSelection():Void {
