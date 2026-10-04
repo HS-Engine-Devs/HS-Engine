@@ -22,6 +22,7 @@ Your mod folder should be organized like this:
         'Inst.ogg'        // - Instrumental audio track
         'Voices.ogg'      // - Vocals audio track
     'data/'
+      'songList.txt'
       'charts/'
         'your-song/'
           'your-song.json'      // - Chart data file
@@ -55,18 +56,18 @@ Song metadata
 [/h1]
 
 [text]
-To add songs to the freeplay menu and your mod’s song list, you need to create a file named songList.txt inside your mod folder (e.g. mods/your-mod/songList.txt) with the following format:
+To add songs to Freeplay, create data/songList.txt in your mod folder (e.g. mods/your-mod/data/songList.txt). Use one song per line:
 [/text]
 
 [code]
-SongName:Character:WeekNumber:Difficulty1,Difficulty2,Difficulty3
+SongName:Character:WeekNumber[:Difficulty1,Difficulty2,Difficulty3]
 [/code]
 
 [text]
 - **SongName**: The folder name of your song.
 - **Character**: The character associated with the song.
 - **WeekNumber**: The week number this song belongs to.
-- **Difficulties**: Comma-separated difficulties (e.g. easy,normal,hard).
+- **Difficulties** (optional): Comma-separated difficulties (e.g. easy,normal,hard). If omitted, easy, normal, and hard are used.
 [/text]
 
 [text]
@@ -75,7 +76,7 @@ Example:
 
 [code]
 CoolBeat:bf:0:easy,normal,hard
-[/text]
+[/code]
 
 [image]
 src=img/coolbeat.png

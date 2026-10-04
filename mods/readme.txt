@@ -18,7 +18,8 @@ mods/
 
 ZIP MOD
 Place example-mod.zip directly inside mods/. The archive can contain mod files at its
-root, or inside one folder named example-mod (matching the ZIP file name).
+root, or inside one folder named example-mod (matching the ZIP file name, with or
+without the .zip suffix).
 The game reads ZIP contents directly and does not unpack the archive into mods/.
 
 MANIFEST
@@ -49,8 +50,8 @@ COMMON FILE LOCATIONS
     videos/                   Cutscene video files (.mp4)
 
 SONG LIST
-Add data/songList.txt to add songs to Freeplay. The older root-level songList.txt
-format is still supported for existing mods.
+Add data/songList.txt to add songs to Freeplay. This is the only supported song-list
+location.
 Use one song per line:
     song-name:icon-name:week-number
 
@@ -58,4 +59,10 @@ You can optionally specify the available difficulties as a fourth field:
     song-name:icon-name:week-number:easy,normal,hard
 
 Keep file and folder names consistent with the names referenced by your JSON files
-and scripts. For ZIP mods, capitalization must match exactly.
+and scripts. In ZIP archives, capitalization must match exactly.
+
+MOD LIBRARY
+The Mod Library shows each mod's name, author, version, description, enabled state, and
+whether it is a folder or ZIP. An optional root icon.png is shown when available.
+Use Up/Down or the mouse wheel to browse, Enter to enable or disable, R to refresh,
+and 7 to open the editor.

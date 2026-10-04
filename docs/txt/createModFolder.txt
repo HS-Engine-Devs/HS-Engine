@@ -3,21 +3,26 @@ Creating a Mod Folder
 [/h1]
 
 [text]
-To create a mod for the HS Engine, follow these steps:
-
-1. **Create a New Folder**: Inside the `mods/` directory, create a new folder named after your mod (e.g., `my_mod`).
-
-2. **Add Resources**: Inside your mod's folder, you can include the following types of resources:
-
-   - **Data**: Add JSON files and Haxe scripts in the `data/` subfolder.
-
-   - **Images**: Place custom images in the appropriate subfolders (e.g., `images/` for character sprites).
-
-   - **Sounds**: Add custom sounds in the `sounds/` folder.
-
-   - **Videos**: Include .mp4 video files in the `videos/` subfolder.
+Create a folder inside mods/ or place a ZIP archive directly inside mods/. A typical
+mod has this structure:
 
 [/text]
+
+[code]
+mods/
+   my-mod/
+      mod.json
+      icon.png (optional)
+      data/
+         songList.txt
+         charts/
+         characters/
+         stages/
+         weeks/
+      images/
+      songs/
+      videos/
+[/code]
 
 [image]
 src=img/shitty-cr.gif
@@ -27,11 +32,24 @@ y=-20
 [/image]
 
 [text]
-By following this structure, you can create and manage mods efficiently, enhancing your Friday Night Funkin' experience.
+Add mod.json to the mod root. Its name, description, author, and version appear in the
+Mod Library. The root icon.png is optional.
+[/text]
 
-3. **Load the Game**: When the game starts, the HS Engine will automatically load and apply your mod's resources.
+[code]
+{
+   "name": "My Mod",
+   "description": "A short description.",
+   "author": "Your Name",
+   "version": "1.0.0"
+}
+[/code]
 
-4. **Enabling/Disabling a Mod**: To enable or disable a mod, navigate to the in-game Mod Menu. Use the arrow keys to select the desired mod, then press Enter to toggle its status.
+[text]
+ZIP archives are read directly and are not extracted. Files can be at the archive root
+or inside one wrapper folder matching the ZIP name, with or without its .zip suffix.
+Use Up/Down or the mouse wheel in the Mod Library to browse, Enter to toggle a mod,
+R to refresh the list, and 7 to open the editor.
 
 [/text]
 
@@ -43,5 +61,6 @@ x=-150
 [/image]
 
 [text]
-By following this structure, you can create and manage mods efficiently, enhancing your Friday Night Funkin' experience.
+The game reads enabled mods from mods/ when they are loaded. New mods are enabled by
+default when Automatically Enable New Mods is turned on.
 [/text]

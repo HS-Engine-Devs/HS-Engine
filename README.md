@@ -3,11 +3,14 @@
 <img src="docs/img/hs-engine.png" width="500" height="300" style="margin-left: -50px;">
 
 </br>
-This is the repository of Friday Night Funkin': HS Engine.
+HS Engine is a HaxeFlixel-based engine and modding framework for Friday Night Funkin'.
+It provides custom gameplay content, in-game editors, scripting support, and tools for
+building and managing mods.
 
 ## ModAPI
 
-(ModAPI coming out soon :0)
+The ModAPI documents how to extend HS Engine with custom content. The full API
+documentation is still in progress; the current guides cover mod setup and resources.
 
 ## Credits
 
@@ -37,34 +40,6 @@ This is the repository of Friday Night Funkin': HS Engine.
 | <img src="docs/img/phantomarcade.png" width="64" height="64"/> | [PhantomArcade3K](https://twitter.com/PhantomArcade3K) | Artist of Friday Night Funkin'
 | <img src="docs/img/evilsk8r.png" width="64" height="64"/> | [evilsk8r](https://twitter.com/evilsk8r) | Artist of Friday Night Funkin'
 | <img src="docs/img/kawaisprite.png" width="64" height="64"/> | [Kawai Sprite](https://twitter.com/kawaisprite) | Composer of Friday Night Funkin'
-
-<details>
-	<summary>
-		<h2>TODOS:</h2>
-	</summary>
-	<details>
-		<summary>Done</summary>
-		<ul>
-			<li>Template thing</li>
-            <li>Template thing</li>
-            <li>Template thing</li>
-		</ul>
-	</details>
-	<details>
-		<summary>In Progress</summary>
-		<ul>
-			<li>Template thing</li>
-            <li>Template thing</li>
-		</ul>
-	</details>
-	<details>
-		<summary>Not started</summary>
-		<ul>
-			<li>Template thing</li>
-			<li>Add a Playable Photoshop Flowey Fight /j</li>
-		</ul>
-	</details>
-</details>
 
 ## Build instructions
 
